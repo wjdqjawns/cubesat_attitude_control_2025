@@ -14,7 +14,7 @@
 clear; close all; clc;
 
 % make simulation
-cfg = simulation_config();
+cfg = SimulationConfig();
 model = CubliModel2D(cfg.model);
 
 switch cfg.controller.type

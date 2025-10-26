@@ -1,5 +1,5 @@
 %% ========================================================================
-%  File: simulation_config.m
+%  File: SimulationConfig.m
 %  Project: Cubli Simulation (MATLAB)
 %  Description:
 %      Configuration file defining simulation environment, model parameters,
@@ -31,7 +31,7 @@
 %
 %  ========================================================================
 
-function cfg = simulation_config()
+function cfg = SimulationConfig()
     %---------------------------------------------
     % 1) simulation environments
     %---------------------------------------------
@@ -56,7 +56,7 @@ function cfg = simulation_config()
     %---------------------------------------------
     % 3) controller (PID or LQR)
     %---------------------------------------------
-    cfg.controller.type = 'PID'; % 'PID' or 'LQR'
+    cfg.controller.type = 'LQR'; % 'PID' or 'LQR'
 
     % pid controller param
     cfg.controller.PID.Kp = 8;
@@ -64,8 +64,8 @@ function cfg = simulation_config()
     cfg.controller.PID.Kd = 0.8;
 
     % lqr controller param
-    cfg.controller.LQR.Q = diag([30, 3, 10, 2]);
-    cfg.controller.LQR.R = 0.5;
+    cfg.controller.LQR.Q = diag([1, 0.1, 1, 0.1]);
+    cfg.controller.LQR.R = 0.01;
 
     %---------------------------------------------
     % 4) save location and file name

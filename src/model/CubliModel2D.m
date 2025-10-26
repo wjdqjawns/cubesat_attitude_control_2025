@@ -18,12 +18,28 @@ classdef CubliModel2D
             obj.Km = modelParam.Km;
         end
 
+        % ------------------------------
+        % Linearized model (\theta_b≈\theta)
+        % ------------------------------
+        function [A,B] = getStateSpace(obj)
+            Jb = obj.Ib + obj.mw * obj.l^2;
+            Jw = obj.Iw;
+            mgl = 0.1*(obj.mb*obj.lb + obj.mw*obj.l)*obj.g;
+
+            A = [ 0 1 0 0;
+                 mgl/Jb -obj.Cb/Jb 0  obj.Cw/Jb;
+                  0 0 0 1;
+                 -mgl/Jw obj.Cb/Jw 0 -obj.Cw/Jw];
+
+            B = [0; -obj.Km/Jb; 0; obj.Km/Jw];
+        end
+
+        % ------------------------------
+        % Nonlinear dynamics
+        % ------------------------------
         function dx = dynamics(obj, x, u)
-            % state space: [\theta_b, \dot{\thate_b}, \theta_w, \dot{\theta_w}]
-            theta_b = x(1);
-            dtheta_b = x(2);
-            theta_w = x(3);
-            dtheta_w = x(4);
+            theta_b = x(1); dtheta_b = x(2);
+            theta_w = x(3); dtheta_w = x(4);
 
             % Input torque from motor
             Tm = obj.Km * u;
