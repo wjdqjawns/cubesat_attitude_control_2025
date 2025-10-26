@@ -1,8 +1,8 @@
 classdef Animator
     methods (Static)
         function animate(results, cfg)
-            theta = results.state(:,1);
-            t = results.time;
+            theta = results.x_hist(:,1);
+            t = results.t;
             L = cfg.model.l * 2; % 정사각형 한 변 길이
             dt = cfg.simulation.dt;
 

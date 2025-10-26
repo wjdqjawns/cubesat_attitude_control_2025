@@ -1,0 +1,66 @@
+% classdef CubilModel2D
+%     properties
+%         m; l; J; g;
+%     end
+%     methods
+%         function obj = CubilModel2D(param)
+%             obj.m = param.m;
+%             obj.l = param.l;
+%             obj.J = param.J;
+%             obj.g = param.g;
+%         end
+% 
+%         function dx = dynamics(obj, x, u)
+%             theta = x(1);
+%             dtheta = x(2);
+%             ddtheta = (obj.m*obj.g*obj.l*sin(theta) - u) / obj.J;
+%             dx = [dtheta; ddtheta];
+%         end
+%     end
+% end
+
+classdef CubliModel2D
+    properties
+        mb; mw; lb; l; Ib; Iw; g;
+        Cb; Cw; Km;
+    end
+
+    methods
+        function obj = CubliModel2D(modelParam)
+            obj.mb = modelParam.mb;
+            obj.mw = modelParam.mw;
+            obj.lb = 0.075;
+            obj.l  = 0.085;
+            obj.Ib = 3.34e-3;
+            obj.Iw = 0.57e-3;
+            obj.g  = 9.81;
+            obj.Cb = 1.02e-3;
+            obj.Cw = 0.05e-3;
+            obj.Km = 25.1e-3; % torque constant [N·m/A]
+        end
+
+        function dx = dynamics(obj, x, u)
+            % States: [θ_b, θ̇_b, θ_w, θ̇_w]
+            theta_b = x(1);
+            dtheta_b = x(2);
+            theta_w = x(3);
+            dtheta_w = x(4);
+
+            % Input torque from motor
+            Tm = obj.Km * u;
+
+            % Constants
+            A = (obj.mb*obj.lb + obj.mw*obj.l) * obj.g * sin(theta_b);
+            denom = (obj.Ib + obj.mw * obj.l^2);
+
+            % Equations from the paper
+            ddtheta_b = (A - Tm - obj.Cb*dtheta_b + obj.Cw*dtheta_w) / denom;
+
+            ddtheta_w = ((obj.Ib + obj.Iw + obj.mw*obj.l^2)*(Tm - obj.Cw*dtheta_w) ...
+                        - (obj.Iw + obj.mw*obj.l^2)*(obj.Cb*dtheta_b + (obj.mb*obj.lb + obj.mw*obj.l)*obj.g*sin(theta_b))) ...
+                        / (obj.Iw * (obj.Ib + obj.mw*obj.l^2));
+
+            dx = [dtheta_b; ddtheta_b; dtheta_w; ddtheta_w];
+        end
+    end
+end

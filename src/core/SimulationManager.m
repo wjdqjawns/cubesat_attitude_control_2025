@@ -17,30 +17,30 @@ classdef SimulationManager
             T = obj.cfg.simulation.duration;
             steps = T/dt;
 
-            x = [deg2rad(10); 0]; % initial angle
+            x = [deg2rad(10); 0; 0; 0]; % initial angle
             ref = 0;
-            time = zeros(steps,1);
-            state_hist = zeros(steps,2);
+
+            t = zeros(steps,1);
+            x_hist = zeros(steps,4);
             u_hist = zeros(steps,1);
 
             for k = 1:steps
-                t = (k-1)*dt;
                 error = ref - x(1);
                 [u, obj.controller] = obj.controller.compute(error, dt);
                 dx = obj.model.dynamics(x, u);
                 x = x + dx*dt; % Euler integration
 
                 % save info
-                time(k) = t;
-                state_hist(k,:) = x';
+                t(k) = (k-1)*dt;
+                x_hist(k,:) = x';
                 u_hist(k) = u;
             end
 
             % save results
             results = struct( ...
-                'time', time, ...
-                'state', state_hist, ...
-                'input', u_hist ...
+                't', t, ...
+                'x_hist', x_hist, ...
+                'u_hist', u_hist ...
             );
 
             save(obj.cfg.meta.filename.mat, "results");

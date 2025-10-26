@@ -42,12 +42,12 @@ function cfg = simulation_config()
     %---------------------------------------------
     % 2) Model parameters (from Cubli paper)
     %---------------------------------------------
-    cfg.model.mb = 0.419;   % the pendulum body mass (kg)
-    cfg.model.mw = 0.204;   % the pendulum wheel mass (kg)
-    cfg.model.lb = 0.075;   %  (m)
-    cfg.model.l  = 0.085;   % the moment of inertia of the wheel and the motor  (m)
-    cfg.model.Ib = 3.34e-3; % the moment of inertia of the pendulu, body around the pivot point [N·m/A]
-    cfg.model.Iw = 0.57e-3; % moment of inertia of the whell and the motor rotor around the rotational axis of the motor [N·m/A]
+    cfg.model.mb = 0.419;   % body mass (kg)
+    cfg.model.mw = 0.204;   % wheel mass (kg)
+    cfg.model.lb = 0.075;   % pivot to COM (m)
+    cfg.model.l  = 0.085;   % pivot to wheel (m)
+    cfg.model.Ib = 3.34e-3; % torque constant [N·m/A]
+    cfg.model.Iw = 0.57e-3; % moment of inertia of the whell and the moto [N·m/A]
     cfg.model.Cb = 1.02e-3; % dynamic friction coefficients of the pendulum body [N·m/A]
     cfg.model.Cw = 0.05e-3; % dynamic friction coefficients of the pendulum wheel [kg·m^2/s]
     cfg.model.Km = 25.1e-3; % torque constant of the bldc motor [N·m/A]

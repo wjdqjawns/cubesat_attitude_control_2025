@@ -1,9 +1,9 @@
 classdef Plotter
     methods (Static)
         function plotResults(results)
-            t = results.time;
-            theta = results.state(:,1);
-            u = results.input;
+            t = results.t;
+            theta = results.x_hist(:,1);
+            u = results.u_hist;
 
             figure('Name','Cubli Simulation Results','Position',[200,200,1000,400]);
 

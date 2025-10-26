@@ -15,15 +15,16 @@ clear; close all; clc;
 
 % make simulation
 cfg = simulation_config();
-model = CubilModel2D(cfg.model);
+model = CubliModel2D(cfg.model);
 
-if cfg.controller.type == 'PID'
-    controller = PIDController(cfg.controller.PID);
-elseif cfg.controller.type == 'LQR'
-    controller = LQRController(cfg.controller.LQR);
+switch cfg.controller.type
+    case 'PID'
+        controller = PIDController(cfg.controller.PID);
+    case 'LQR'
+        controller = LQRController(cfg.controller.LQR);
 end
 
-% do simulation
+% run simulation
 sim = SimulationManager(model, controller, cfg);
 results = sim.run();
 

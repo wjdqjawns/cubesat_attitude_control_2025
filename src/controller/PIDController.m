@@ -1,14 +1,15 @@
 classdef PIDController
     properties
         Kp; Ki; Kd;
-        prev_error = 0;
-        integral = 0;
+        prev_error; integral;
     end
     methods
         function obj = PIDController(param)
             obj.Kp = param.Kp;
             obj.Ki = param.Ki;
             obj.Kd = param.Kd;
+            obj.integral = 0;
+            obj.prev_error = 0;
         end
 
         function [u, obj] = compute(obj, error, dt)
