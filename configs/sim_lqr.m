@@ -1,5 +1,5 @@
 %% ========================================================================
-%  File: simulation_config.m
+%  File: SimulationConfig.m
 %  Project: Cubli Simulation (MATLAB)
 %  Description:
 %      Configuration file defining simulation environment, model parameters,
@@ -31,7 +31,7 @@
 %
 %  ========================================================================
 
-function cfg = simulation_config()
+function cfg = SimulationConfig()
     %---------------------------------------------
     % 1) simulation environments
     %---------------------------------------------
@@ -42,12 +42,12 @@ function cfg = simulation_config()
     %---------------------------------------------
     % 2) Model parameters (from Cubli paper)
     %---------------------------------------------
-    cfg.model.mb = 0.419;   % body mass (kg)
-    cfg.model.mw = 0.204;   % wheel mass (kg)
-    cfg.model.lb = 0.075;   % pivot to COM (m)
-    cfg.model.l  = 0.085;   % pivot to wheel (m)
-    cfg.model.Ib = 3.34e-3; % torque constant [N·m/A]
-    cfg.model.Iw = 0.57e-3; % moment of inertia of the whell and the moto [N·m/A]
+    cfg.model.mb = 0.419;   % the pendulum body mass (kg)
+    cfg.model.mw = 0.204;   % the pendulum wheel mass (kg)
+    cfg.model.lb = 0.075;   %  (m)
+    cfg.model.l  = 0.085;   % the moment of inertia of the wheel and the motor  (m)
+    cfg.model.Ib = 3.34e-3; % the moment of inertia of the pendulu, body around the pivot point [N·m/A]
+    cfg.model.Iw = 0.57e-3; % moment of inertia of the whell and the motor rotor around the rotational axis of the motor [N·m/A]
     cfg.model.Cb = 1.02e-3; % dynamic friction coefficients of the pendulum body [N·m/A]
     cfg.model.Cw = 0.05e-3; % dynamic friction coefficients of the pendulum wheel [kg·m^2/s]
     cfg.model.Km = 25.1e-3; % torque constant of the bldc motor [N·m/A]
@@ -56,7 +56,7 @@ function cfg = simulation_config()
     %---------------------------------------------
     % 3) controller (PID or LQR)
     %---------------------------------------------
-    cfg.controller.type = 'PID'; % 'PID' or 'LQR'
+    cfg.controller.type = 'LQR'; % 'PID' or 'LQR'
 
     % pid controller param
     cfg.controller.PID.Kp = 8;
@@ -64,8 +64,8 @@ function cfg = simulation_config()
     cfg.controller.PID.Kd = 0.8;
 
     % lqr controller param
-    cfg.controller.LQR.Q = diag([30, 3, 10, 2]);
-    cfg.controller.LQR.R = 0.5;
+    cfg.controller.LQR.Q = diag([1, 0.1, 1, 0.1]);
+    cfg.controller.LQR.R = 0.01;
 
     %---------------------------------------------
     % 4) save location and file name
